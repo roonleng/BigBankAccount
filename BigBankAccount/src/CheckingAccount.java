@@ -39,9 +39,9 @@ public  class CheckingAccount extends BankAccount
 	}
 	public void withdraw(double amt)
 	{
-		if(amt>0 || super.getBalance()<0)
+		if(amt>0)
 		{
-			if (super.getBalance()<0)
+			if (super.getBalance()<=0)
 			{
 				throw new IllegalArgumentException();			
 			}

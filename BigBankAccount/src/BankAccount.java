@@ -2,10 +2,7 @@
 public abstract class BankAccount 
 {
 	//fields
-	/** add accnum to constructor and getnum method
-	 * 
-	 */
-	private static int nextAccNum;
+	private static int nextAccNum=1;
 	private String accName;
 	private int accNum;
 	private double balance;
@@ -18,15 +15,19 @@ public abstract class BankAccount
 	public BankAccount(String n, double b)
 	{
 		accName= n;
+		accNum=nextAccNum;
+		nextAccNum++;
 		balance=b;
 	}
 	/**
 	 * 
 	 * @param n represents the name of the account
 	 */
-	public BankAccount(String n)
+	public BankAccount(String n, int n2)
 	{
 		accName= n;
+		nextAccNum++;
+		n2=nextAccNum;
 	}
 	//methods
 	/**
@@ -57,6 +58,10 @@ public abstract class BankAccount
 	 * this method lets the user check the balance in the account
 	 * @return returns the balance of the account
 	 */
+	public int getAccNum()
+	{
+		return accNum;
+	}
 	public double getBalance()
 	{
 		return balance;
