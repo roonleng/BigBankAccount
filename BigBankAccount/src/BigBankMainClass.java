@@ -44,8 +44,13 @@ public class BigBankMainClass {
 		int accNumber;
 		double amt;
 		int number=0;
+		String isNum;
+		boolean numMatch=false;
+		boolean error=false;
+		double inputNum;
+		boolean runNextBlock2;
 		System.out.println("Hello! Welcome to the Bank Account Class!");
-		while (run==true)
+		while (run)
 		{ 
 			System.out.println("Type 'N' to create a new account,"
 					+ " 'T' to make a transaction, or 'E' to end the program: ");
@@ -53,7 +58,7 @@ public class BigBankMainClass {
 			if (choice.equals("N")||choice.equals("n"))
 			{
 				choosingType=true;
-				while(choosingType==true)
+				while(choosingType)
 				{
 					System.out.println("What type of account would you like to create? Type 'C'"
 							+ " for a checking account, or 'S' for a savings account: ");
@@ -76,7 +81,7 @@ public class BigBankMainClass {
 				System.out.println("Please enter the name of the account holder:   ");
 				accountHolder=in.nextLine();
 				runNextBlock=true;
-				while (runNextBlock==true)
+				while (runNextBlock)
 				{
 					System.out.println("Would you like to create a starting balance? "
 							+ "Please enter 'Y' for yes, or 'N' for no.");
@@ -85,16 +90,20 @@ public class BigBankMainClass {
 					{
 						runStartBalCheck=true;
 						//messes up when u enter something that isnt an int
-						while (runStartBalCheck==true)
+						while (runStartBalCheck)
 						{
 							System.out.println("Please enter a starting balance: ");
-							if (isNumeric(in.hasNextLine))
+							isNum=in.nextLine();
+							if (isNumeric(isNum))
 							{
-								
+								startBal=Double.parseDouble(isNum);
+								System.out.println(startBal);
+								runStartBalCheck=false;
+								runNextBlock=false;
 							}
-							else
+							else if (!isNumeric(isNum))
 							{
-								System.out.println("Yo! Your input wasn't an integer. Please try again. ");
+								System.out.println("Yo! Your input wasn't a number. Please try again. ");
 							}
 						}
 					}
@@ -107,7 +116,7 @@ public class BigBankMainClass {
 						System.out.println("Yo! Your input wasn't Y or N. Please try again. ");
 					}
 				}
-				if (checkingAcc==true)
+				if (checkingAcc)
 				{
 					accounts.add(new CheckingAccount(accountHolder, startBal, OVER_DRAFT_FEE, TRANSACTION_FEE, FREE_TRANSACTIONS));
 				}
@@ -117,63 +126,104 @@ public class BigBankMainClass {
 				}
 				
 			}
-			if (choice.equals("T")||choice.equals("t"))
+			else if (choice.equals("T")||choice.equals("t"))
 			{
 				runNextBlock=true;
-				while (runNextBlock==true)
+				while (runNextBlock)
 				{
 					System.out.println("What is the number of the account would you like to make a transaction in? ");
-					number= in.nextInt();
-					for(BankAccount account : accounts)
+					if (error)
 					{
-						if(number==account.getAccNum());
-							runNextBlock=false;
+						in.next();
 					}
-					if (runNextBlock=true)
+					if(in.hasNextInt())
 					{
-						System.out.print("What you entered was not the name of the account. Please try again. ");
+						number= in.nextInt();
+						for(BankAccount account : accounts)
+						{
+							if(number==account.getAccNum())
+							{
+								System.out.println("It works!");
+								runNextBlock=false;
+								numMatch=true;
+							}
+						}
+						if (!numMatch)
+						{
+							System.out.println("Hey! You didn't enter an account number! Try again");
+						}
+					}
+					else
+					{
+						error=true;
+						System.out.println("That's not an integer! Try again.");
 					}
 				}
 				runNextBlock=true;
-				while (runNextBlock=true)
+				while (runNextBlock)
 				{
 					System.out.println("What type of transactiton would you like to make? Type 'W' for  withdraw, 'D' for deposit, or 'T' for a transfer");
+					System.out.println("before in.next");
+					in.next();
+					System.out.println("after in.next");
 					choice=in.nextLine();
+					System.out.println("after in.nextLine");
 					if (choice.equals("W")||choice.equals("w"))
 					{
-						runNextBlock=false;
+						System.out.println("does this fix it?");
 						System.out.println("How much money would you like to withdraw?: ");
-						if(in.hasNextDouble()||in.hasNextInt())
+						isNum=in.nextLine();
+						if (isNumeric(isNum))
 						{
-							amt=in.nextDouble();
-							accounts.get(number).withdraw(amt);
+							inputNum=Double.parseDouble(isNum);
+							System.out.println(inputNum);
+							runStartBalCheck=false;
+							runNextBlock=false;
+						}
+						else if (!isNumeric(isNum))
+						{
+							System.out.println("Yo! Your input wasn't a number. Please try again. ");
 						}
 					}
 					else if (choice.equals("D")||choice.equals("d"))
 					{
-						runNextBlock=false;
-						System.out.println("How much money would you like to deposit?: ");
-						if(in.hasNextDouble()||in.hasNextInt())
+						runNextBlock2=true;
+						while(runNextBlock2)
 						{
-							amt=in.nextDouble();
-							accounts.get(number).withdraw(amt);
+							System.out.println("How much money would you like to deposit?: ");
+							isNum=in.nextLine();
+							if (isNumeric(isNum))
+							{
+								inputNum=Double.parseDouble(isNum);
+								System.out.println(inputNum);
+								runNextBlock=false;
+							}
+							else if (!isNumeric(isNum))
+							{
+								System.out.println("Yo! Your input wasn't a number. Please try again. ");
+							}
 						}
-
 					}
 					else if (choice.equals("T")||choice.equals("t"))
 					{
 						runNextBlock=false;
 						System.out.println("How much money would you like to transfer?: ");
-						if(in.hasNextDouble()||in.hasNextInt())
+						isNum=in.nextLine();
+						if (isNumeric(isNum))
 						{
-							amt=in.nextDouble();
-							accounts.get(number).withdraw(amt);
+							inputNum=Double.parseDouble(isNum);
+							System.out.println(inputNum);
+							runStartBalCheck=false;
+							runNextBlock=false;
 						}
-
+						else if (!isNumeric(isNum))
+						{
+							System.out.println("Yo! Your input wasn't a number. Please try again. ");
+						}
 					}
 					else
 					{
-						System.out.print("Yo! You entered something that wasn't an option. Try again.");
+						System.out.println("Yo! You entered something wrong. Try again.");
 					}
 				}
 			}
