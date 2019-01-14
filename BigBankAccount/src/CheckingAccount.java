@@ -105,9 +105,9 @@ public  class CheckingAccount extends BankAccount
 	}
 	public void transfer(BankAccount other, double amt)
 	{
-		if (other.getName()==super.getName())
+		if (other.getName().equals(this.getName()))
 		{
-			if (amt<=super.getBalance() && amt>0)
+			if (amt<=this.getBalance() && amt>0)
 			{
 				this.withdraw(amt);
 				other.deposit(amt);

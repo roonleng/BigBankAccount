@@ -3,7 +3,6 @@ import java.util.Scanner;
 public class BigBankMainClass 
 {
 	//TEST CLASS ISSUE GO BACK AND FIX LATER
-	//FIGURE OUT ISNUMERIC AND USING IT TO TEST NUMBER INPUTS
 	public static boolean isNumeric(String num) 
 	{
 		try 
@@ -60,14 +59,17 @@ public class BigBankMainClass
 		boolean askGetNums;
 		String response;
 		int accNumInfo;
-		String accNumTrans;
+		String accNumTrans=null;
 		int accIntTrans=0;
 		String transferToName=null;
 		String transferFromName=null;
 		BankAccount transferTo=null;
+		boolean runNextBlock4;
+		boolean success=false;;
 		System.out.println("Hello! Welcome to the Bank Account Class!");
 		while (run)
 		{ 
+			
 			System.out.println("Type 'N' to create a new account,"
 					+ " 'T' to make a transaction, 'I' to check account info, or 'E' to end the program: ");
 			String choice = in.nextLine();
@@ -327,15 +329,25 @@ public class BigBankMainClass
 							runNextBlock3=true;
 							while(runNextBlock3)
 							{
-								System.out.println("What is the number of the account you're transferring to?");
-								accNumTrans=in.nextLine();
-								try
+								runNextBlock4=true;
+								while(runNextBlock4)
 								{
-									accIntTrans=Integer.parseInt(accNumTrans);
-								}
-								catch(IllegalArgumentException e)
-								{
-									System.out.println("Transaction not authorized.");
+									System.out.println("What is the number of the account you're transferring to?");
+									accNumTrans=in.nextLine();
+									try
+									{
+										accIntTrans=Integer.parseInt(accNumTrans);
+										runNextBlock4=false;
+										if (accounts.size()<accIntTrans)
+										{
+											throw new IllegalArgumentException(); 
+										}
+									}
+									catch(IllegalArgumentException e)
+									{
+										System.out.println("Transaction not authorized.");
+										runNextBlock4=true;
+									}
 								}
 								for (BankAccount account : accounts)
 								{
@@ -344,12 +356,16 @@ public class BigBankMainClass
 										transferFromName=account.getName();
 									}
 								}
-								accIntTrans=Integer.parseInt(accNumTrans);
 								for (BankAccount account : accounts)
 								{
 									if (accIntTrans==account.getAccNum())
 									{
 										transferToName=account.getName();
+										success=true;
+									}
+									else
+									{
+										runNextBlock4=true;
 									}
 								}
 								if (transferToName.equals(transferFromName))
@@ -358,46 +374,24 @@ public class BigBankMainClass
 								}
 								else
 								{
-									System.out.println("The accounts aren't under the same name. Try again");
+									System.out.println("The accounts aren't under the same name, or you entered a second account number that isn't in the register. Try again");
 								}
 							}
 							runNextBlock3=true;
 							while(runNextBlock3)
 							{
 								System.out.println("How much money would you like to transfer?: ");
-								isNum=in.nextLine();
-								for (BankAccount transferToLoop: accounts)
-								for (BankAccount account : accounts)
+								try
 								{
-									System.out.println("test1");
-									/**for (BankAccount transferToLoop: accounts)
-									{
-										System.out.println("test2");
-
-										if (accIntTrans==transferTo.getAccNum())
-										{
-											System.out.println("test3");
-
-											transferTo = transferToLoop;
-										}
-									*/}
-									if (accNumber==account.getAccNum())
-									{
-										try
-										{
-											System.out.println("test4");
-
-											account.transfer(transferTo, Double.parseDouble(isNum));
-											System.out.println("We out here");
-										}
-										catch(IllegalArgumentException e)
-										{
-											System.out.println("Transaction not authorized");
-											runNextBlock2=true;
-											runNextBlock3=false;
-										}
-									}
+									isNum=in.nextLine();
+									accounts.get(accNumber-1).transfer(accounts.get(accIntTrans-1), Double.parseDouble(isNum));
+									runNextBlock2=false;
+									runNextBlock3=false;
 								}
+								catch(IllegalArgumentException e)
+								{
+									System.out.println("Transaction not Authorized");
+								}			
 							}
 						}
 
