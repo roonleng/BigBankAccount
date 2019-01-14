@@ -1,4 +1,3 @@
-
 public  class CheckingAccount extends BankAccount
 {
 	/**
@@ -37,7 +36,7 @@ public  class CheckingAccount extends BankAccount
 			}
 		}
 	}
-	public void withdraw(double amt)
+	/**public void withdraw(double amt)
 	{
 		if(amt>0)
 		{
@@ -66,6 +65,42 @@ public  class CheckingAccount extends BankAccount
 		if(numTransactions>FREE_TRANS)
 		{
 			super.withdraw(TRANSACTION_FEE);
+		}
+	}
+	*/
+	public void withdraw(double amt)
+	{
+		if(amt>0)
+		{
+			if (super.getBalance()<=0)
+			{
+				throw new IllegalArgumentException();			
+			}
+			else if (super.getBalance()>=amt)
+			{
+				super.withdraw(amt);
+				numTransactions++;
+				if(numTransactions>FREE_TRANS)
+				{
+					super.withdraw(TRANSACTION_FEE);
+				}
+			}
+			
+			else
+				{
+					super.withdraw(OVER_DRAFT_FEE);
+					super.withdraw(amt);
+					numTransactions++;
+					if(numTransactions>FREE_TRANS)
+					{
+						super.withdraw(TRANSACTION_FEE);
+					}
+				}
+		}
+		else
+		{
+			throw new IllegalArgumentException();			
+
 		}
 	}
 	public void transfer(BankAccount other, double amt)

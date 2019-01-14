@@ -16,8 +16,8 @@ public abstract class BankAccount
 	{
 		accName= n;
 		accNum=nextAccNum;
-		nextAccNum++;
 		balance=b;
+		nextAccNum++;
 	}
 	/**
 	 * 
@@ -26,8 +26,8 @@ public abstract class BankAccount
 	public BankAccount(String n, int n2)
 	{
 		accName= n;
-		nextAccNum++;
 		n2=nextAccNum;
+		nextAccNum++;
 	}
 	//methods
 	/**
@@ -86,6 +86,6 @@ public abstract class BankAccount
 	 */
 	public String toString()
 	{
-		return "\t" + accNum + "\t" + accName + "\t$" + balance;
+		return "\tNumber:" + accNum + "\tName:" + accName + "\tBalance: $" + balance;
 	}
 }
